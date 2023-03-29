@@ -1,5 +1,6 @@
 import React from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
+import Menu from "../components/menu"
 import parse from "html-react-parser"
 
 const Layout = ({ isHomePage, children }) => {
@@ -31,15 +32,16 @@ const Layout = ({ isHomePage, children }) => {
           </Link>
         )}
       </header>
+      <Menu />
 
       <main>{children}</main>
 
       <footer>
-        © {new Date().getFullYear()}, Built with
+        © {new Date().getFullYear()}, Создано с помощью
         {` `}
         <a href="https://www.gatsbyjs.com">Gatsby</a>
         {` `}
-        And <a href="https://wordpress.org/">WordPress</a>
+        и <a href="https://reinforcementlearning.ru">.RL - reinforcementlearning.ru</a>
       </footer>
     </div>
   )
