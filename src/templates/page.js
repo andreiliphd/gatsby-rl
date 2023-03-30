@@ -4,10 +4,10 @@ import { GatsbyImage } from "gatsby-plugin-image"
 import parse from "html-react-parser"
 
 // We're using Gutenberg so we need the block styles
-// these are copied into this project due to a conflict in the postCSS
+// these are copied into this project due to a conflict in the PageCSS
 // version used by the Gatsby and @wordpress packages that causes build
 // failures.
-// @todo update this once @wordpress upgrades their postcss version
+// @todo update this once @wordpress upgrades their Pagecss version
 import "../css/@wordpress/block-library/build-style/style.css"
 import "../css/@wordpress/block-library/build-style/theme.css"
 
@@ -15,29 +15,33 @@ import Bio from "../components/bio"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 
-const BlogPostTemplate = ({ data: { previous, next, post } }) => {
-  console.log("post");
-  console.log(post);
+const PageTemplate = ({ data: { previous, next, page } }) => {
+  console.log("page");
+  console.log(page);
+  console.log("previous");
+  console.log(previous);
+  console.log("next");
+  console.log(next);
   const featuredImage = {
-    data: post.featuredImage?.node?.localFile?.childImageSharp?.gatsbyImageData,
-    alt: post.featuredImage?.node?.alt || ``,
+    data: page.featuredImage?.node?.localFile?.childImageSharp?.gatsbyImageData,
+    alt: page.featuredImage?.node?.alt || ``,
   }
 
   return (
     <Layout>
-      <Seo title={post.title} description={post.excerpt} />
+      <Seo title={page.title} description={page.excerpt} />
 
       <article
-        className="blog-post"
+        className="blog-page"
         itemScope
         itemType="http://schema.org/Article"
       >
         <header>
-          <h1 itemProp="headline">{parse(post.title)}</h1>
+          <h1 itemProp="headline">{parse(page.title)}</h1>
 
-          <p>{post.date}</p>
+          <p>{page.date}</p>
 
-          {/* if we have a featured image for this post let's display it */}
+          {/* if we have a featured image for this page let's display it */}
           {featuredImage?.data && (
             <GatsbyImage
               image={featuredImage.data}
@@ -47,8 +51,8 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
           )}
         </header>
 
-        {!!post.content && (
-          <section itemProp="articleBody">{parse(post.content)}</section>
+        {!!page.content && (
+          <section itemProp="articleBody">{parse(page.content)}</section>
         )}
 
         <hr />
@@ -58,7 +62,7 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
         </footer>
       </article>
 
-      <nav className="blog-post-nav">
+      <nav className="blog-page-nav">
         <ul
           style={{
             display: `flex`,
@@ -89,45 +93,35 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
   )
 }
 
-export default BlogPostTemplate
+export default PageTemplate
 
 export const pageQuery = graphql`
-  query BlogPostById(
-    $id: String!
-    $previousPostId: String
-    $nextPostId: String
-  ) {
-    post: wpPost(id: { eq: $id }) {
-      id
-      excerpt
-      content
-      title
-      date(formatString: "MMMM DD, YYYY")
-      featuredImage {
-        node {
-          altText
-          localFile {
-            childImageSharp {
-              gatsbyImageData(
-                quality: 100
-                placeholder: TRACED_SVG
-                layout: FULL_WIDTH
-              )
-            }
+query PagetById($id: String!, $previousPageId: String, $nextPageId: String) {
+  page: wpPage(id: {eq: $id}) {
+    id
+    excerpt
+    content
+    title
+    date(formatString: "MMMM DD, YYYY")
+    featuredImage {
+      node {
+        altText
+        localFile {
+          childImageSharp {
+            gatsbyImageData(quality: 100, placeholder: TRACED_SVG, layout: FULL_WIDTH)
           }
         }
       }
     }
-    previous: wpPost(id: { eq: $previousPostId }) {
-      uri
-      title
-    }
-    next: wpPost(id: { eq: $nextPostId }) {
-      uri
-      title
-    }
   }
-`
-console.log("blog query");
+  previous: wpPage(id: {eq: $previousPageId}) {
+    uri
+    title
+  }
+  next: wpPage(id: {eq: $nextPageId}) {
+    uri
+    title
+  }
+}`
+console.log("page query");
 console.log(pageQuery);
-

@@ -22,6 +22,7 @@ const Layout = ({ isHomePage, children }) => {
   return (
     <div className="global-wrapper" data-is-root-path={isHomePage}>
       <header className="global-header">
+      <Menu />
         {isHomePage ? (
           <h1 className="main-heading">
             <Link to="/">{parse(title)}</Link>
@@ -32,7 +33,6 @@ const Layout = ({ isHomePage, children }) => {
           </Link>
         )}
       </header>
-      <Menu />
 
       <main>{children}</main>
 
