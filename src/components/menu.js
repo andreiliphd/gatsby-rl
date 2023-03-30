@@ -56,7 +56,7 @@ let parseNested = (obj, level) => {
   for (let i of obj) {
     console.log("i");
     console.log(i);
-    if (!(i["children"].length != 0)) {
+    if (!(i["children"].length !== 0)) {
       if (level === 1) {
         res.push(<Nav.Link href={i.path}>{i.label}</Nav.Link>);
         resnes = [];
@@ -94,7 +94,7 @@ let parseNested = (obj, level) => {
   return (
     <Navbar bg="light" expand="lg">
     <Container>
-      <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+      <Navbar.Brand href="#home">.RL</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
